@@ -357,7 +357,7 @@ a {
 .form-control:focus {
   color: var(--bs-body-color);
   background-color: var(--bs-body-bg);
-  border-color: #86b7fe;
+  border-color: #ddc4a8;
   outline: 0;
   box-shadow: none;
 }
@@ -460,7 +460,7 @@ iconify-icon.quote-icon {
   text-transform: capitalize;
   border-radius: 0.25rem;
   border: 1px solid rgba(65, 64, 62, 0.20);
-  background: #FFF;
+  background: #f5f7f8;
   display: flex;
   padding: 1.25rem 0rem 1.25rem 1.25rem;
   align-items: center;
