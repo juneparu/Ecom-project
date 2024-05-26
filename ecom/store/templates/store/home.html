@@ -261,7 +261,6 @@
               <option>Shop by Category</option>
               <option>Clothes</option>
               <option>Food</option>
-              <option>Food</option>
               <option>Toy</option>
             </select>
 
@@ -410,24 +409,14 @@
             <h5>Foodies</h5>
           </a>
         </div>
-        <div class="col text-center">
-          <a href="#" class="categories-item">
-            <iconify-icon class="category-icon" icon="ph:bird"></iconify-icon>
-            <h5>Bird Shop</h5>
-          </a>
-        </div>
+        
         <div class="col text-center">
           <a href="#" class="categories-item">
             <iconify-icon class="category-icon" icon="ph:dog"></iconify-icon>
             <h5>Dog Shop</h5>
           </a>
         </div>
-        <div class="col text-center">
-          <a href="#" class="categories-item">
-            <iconify-icon class="category-icon" icon="ph:fish"></iconify-icon>
-            <h5>Fish Shop</h5>
-          </a>
-        </div>
+      
         <div class="col text-center">
           <a href="#" class="categories-item">
             <iconify-icon class="category-icon" icon="ph:cat"></iconify-icon>
@@ -692,7 +681,7 @@
             <button class="filter-button me-4  active" data-filter="*">ALL</button>
             <button class="filter-button me-4 " data-filter=".cat">CAT</button>
             <button class="filter-button me-4 " data-filter=".dog">DOG</button>
-            <button class="filter-button me-4 " data-filter=".bird">BIRD</button>
+         
           </p>
         </div>
         <div>
@@ -1118,7 +1107,7 @@
               New
             </div> -->
             <div class="card position-relative">
-              <a href="single-product.html"><img src="{%static ''%}store/images/item5.jpg" class="img-fluid rounded-4" alt="image"></a>
+              <a href="single-product.html"><img src="{%static 'store/images/item5.jpg'%}" class="img-fluid rounded-4" alt="image"></a>
               <div class="card-body p-0">
                 <a href="single-product.html">
                   <h3 class="card-title pt-4 m-0">Grey hoodie</h3>
@@ -1155,7 +1144,7 @@
               New
             </div> -->
             <div class="card position-relative">
-              <a href="single-product.html"><img src="{%static ''%}store/images/item6.jpg" class="img-fluid rounded-4" alt="image"></a>
+              <a href="single-product.html"><img src="{%static 'store/images/item6.jpg'%}" class="img-fluid rounded-4" alt="image"></a>
               <div class="card-body p-0">
                 <a href="single-product.html">
                   <h3 class="card-title pt-4 m-0">Grey hoodie</h3>
@@ -1191,7 +1180,7 @@
               Sale
             </div>
             <div class="card position-relative">
-              <a href="single-product.html"><img src="{%static ''%}store/images/item7.jpg" class="img-fluid rounded-4" alt="image"></a>
+              <a href="single-product.html"><img src="{%static 'store/images/item7.jpg'%}" class="img-fluid rounded-4" alt="image"></a>
               <div class="card-body p-0">
                 <a href="single-product.html">
                   <h3 class="card-title pt-4 m-0">Grey hoodie</h3>
@@ -1265,7 +1254,7 @@
               -10%
             </div>
             <div class="card position-relative">
-              <a href="single-product.html"><img src="images/item3.jpg" class="img-fluid rounded-4" alt="image"></a>
+              <a href="single-product.html"><img src="store/images/item3.jpg" class="img-fluid rounded-4" alt="image"></a>
               <div class="card-body p-0">
                 <a href="single-product.html">
                   <h3 class="card-title pt-4 m-0">Grey hoodie</h3>
@@ -1344,7 +1333,7 @@
     </div>
   </section>
 
-  <section id="register" style="background: url('images/background-img.png') no-repeat;">
+  <section id="register" style="background: url('store/images/background-img.png') no-repeat;">
     <div class="container ">
       <div class="row my-5 py-5">
         <div class="offset-md-3 col-md-6 my-5 ">
@@ -1363,9 +1352,10 @@
               <input type="password" class="form-control form-control-lg" name="email" id="password2"
                 placeholder="Repeat Password">
             </div>
-
             <div class="d-grid gap-2">
-              <button type="submit" class="btn btn-dark btn-lg rounded-1">Register it now</button>
+              <a href="{% url 'register' %}" class="btn btn-dark btn-lg rounded-1">Register it now</a>
+            </div>
+            
             </div>
           </form>
         </div>
@@ -1528,7 +1518,7 @@
           <iconify-icon class="text-white" icon="la:instagram"></iconify-icon>
         </div>
         <a href="#">
-          <img src="store/images/insta2.jpg" alt="insta-img" class="img-fluid rounded-3">
+          <img src="{%static 'store/images/insta2.jpg'%}" alt="insta-img" class="img-fluid rounded-3">
         </a>
       </div>
       <div class="col instagram-item  text-center position-relative">
@@ -1536,7 +1526,7 @@
           <iconify-icon class="text-white" icon="la:instagram"></iconify-icon>
         </div>
         <a href="#">
-          <img src="images/insta3.jpg" alt="insta-img" class="img-fluid rounded-3">
+          <img src="{%static 'images/insta3.jpg'%}" alt="insta-img" class="img-fluid rounded-3">
         </a>
       </div>
       <div class="col instagram-item  text-center position-relative">
@@ -1544,7 +1534,7 @@
           <iconify-icon class="text-white" icon="la:instagram"></iconify-icon>
         </div>
         <a href="#">
-          <img src="store/images/insta4.jpg" alt="insta-img" class="img-fluid rounded-3">
+          <img src="{%static 'store/images/insta4.jpg'%}" alt="insta-img" class="img-fluid rounded-3">
         </a>
       </div>
       <div class="col instagram-item  text-center position-relative">
@@ -1552,7 +1542,7 @@
           <iconify-icon class="text-white" icon="la:instagram"></iconify-icon>
         </div>
         <a href="#">
-          <img src="store/images/insta5.jpg" alt="insta-img" class="img-fluid rounded-3">
+          <img src="{%static 'store/images/insta5.jpg'%}" alt="insta-img" class="img-fluid rounded-3">
         </a>
       </div>
       <div class="col instagram-item  text-center position-relative">
@@ -1560,7 +1550,7 @@
           <iconify-icon class="text-white" icon="la:instagram"></iconify-icon>
         </div>
         <a href="#">
-          <img src="store/images/insta6.jpg" alt="insta-img" class="img-fluid rounded-3">
+          <img src="{%static 'store/images/insta6.jpg'%}" alt="insta-img" class="img-fluid rounded-3">
         </a>
       </div>
     </div>
