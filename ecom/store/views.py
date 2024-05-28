@@ -36,4 +36,3 @@ def logout_view(request):
 def home(request):
     products=Product.objects.all()
     return render(request ,"store/home.html",{'products':products})
-

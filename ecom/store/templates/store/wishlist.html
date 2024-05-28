@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>wishlist</title>
+    </head>
+
+<h1> Wishlist</h1>
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Tick Completed/Not Completed</th>
+                    <th>Wishlist</th>
+                    <th>Actions</th>
+                    <th>Completed or not</th>
+                </tr>
+            </thead>
+            {% if show %}
+            <tbody id="table-body">
+                {% for item in show reversed %}
+                <tr>
+                    <form action="{% url 'check' pk=item.pk %}" method="post">
+                        {% csrf_token %}
+                        <td><input type="checkbox" name="check" {% if item.is_checked %} checked {% else %} {% endif %}/>
+                            <button class="delete-btn">&rarr;</button>
+                        </td>
+                    </form>
+                    <td class="wishlist-data">{{ item.wishlist }}</td>
+                    <td>
+                        <form action="{% url 'updatepage' pk=item.pk %}" method="post">
+                            {% csrf_token %}
+                            <button class="delete-btn">update</button>
+                        </form>
+                        <form action="{% url 'delete' pk=item.pk %}" method="post">
+                            {% csrf_token %}
+                            <button class="delete-btn">Delete</button>
+                        </form>
+                    </td>
+                    <td>
+                        <h6>{% if item.is_checked %} <span style="background-color: green;color: #fff;">Completed</span> {% else %} <span style="background-color: red;color: #fff;">Not completed</span> {% endif %}</h6>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+            {% endif %}
+        </table>
+    </div>
+</div>
+</html>
