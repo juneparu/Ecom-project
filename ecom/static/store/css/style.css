@@ -674,3 +674,8 @@ Single Product section style start
   color: var(--light-color);
   background-color: var(--accent-color);
 }
+.wishlist-data.scratched {
+  text-decoration: line-through;
+  color: #999;
+  font-style: italic;
+}

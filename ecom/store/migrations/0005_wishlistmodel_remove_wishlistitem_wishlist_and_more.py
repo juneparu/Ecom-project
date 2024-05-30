@@ -18,18 +18,6 @@ class Migration(migrations.Migration):
                 ('wishlist', models.CharField(max_length=50)),
             ],
         ),
-        migrations.RemoveField(
-            model_name='wishlistitem',
-            name='wishlist',
-        ),
-        migrations.AlterUniqueTogether(
-            name='wishlistitem',
-            unique_together=None,
-        ),
-        migrations.RemoveField(
-            model_name='wishlistitem',
-            name='product',
-        ),
         migrations.DeleteModel(
             name='Wishlist',
         ),

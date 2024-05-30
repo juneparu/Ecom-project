@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 import datetime
 
 class Category(models.Model):
@@ -8,6 +9,7 @@ class Category(models.Model):
        return self.name 
    
 class Customer(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
     first_name=models.CharField(max_length=50)
     last_name=models.CharField(max_length=50)
     email=models.EmailField(max_length=50)
@@ -39,19 +41,15 @@ class Order(models.Model):
     status=models.BooleanField(default=False)
     
     def _str_(self):
-       return self.product
+       return self.Product
  
-# class Wishlist(models.Model):
-#     user = models.ForeignKey(User, on_delete=models.CASCADE)
-
-# class WishlistItem(models.Model):
-#     wishlist = models.ForeignKey(Wishlist, on_delete=models.CASCADE)
-#     product = models.ForeignKey(Product, on_delete=models.CASCADE)
-
-#     class Meta:
-#         unique_together = ('wishlist', 'product') 
-
-# Create your models here.
-class wishlistmodel(models.Model):
-    is_checked = models.BooleanField(default=False)
-    wishlist = models.CharField(max_length=50)
+class wishlist(models.Model):
+    Product=models.ForeignKey(Product, on_delete=models.CASCADE ,default=1 )
+    Customer=models.ForeignKey(Customer, on_delete=models.CASCADE, default=1 )
+    quantity=models.IntegerField(default=1)
+    date_added = models.DateTimeField(default=datetime.datetime.today )
+    is_available = models.BooleanField(default=True)
+    
+    def __str__(self):
+        return f"{self.Customer} - {self.Product}"
+    
