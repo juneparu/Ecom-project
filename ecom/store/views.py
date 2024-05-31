@@ -41,29 +41,30 @@ def home(request):
 
 def insert(request):
     if request.method == "POST":
-        wishlist = request.POST.get('addwish')
-        new_data = wishlist.objects.create(wishlist=wishlist)
-        return redirect("store/show.html")
-    else:
-        return redirect("store/home.html")
+        # Assuming 'addwish' contains the product ID
+        product_id = request.POST.get('addwish')
+        if product_id:
+            # Assuming you have a Product model with id field
+            product = Product.objects.get(pk=product_id)
+            # Create a new WishlistItem for the authenticated user
+            wishlist.objects.create(user=request.user, product=product)
+            return redirect("store:show")
+    return redirect("store:home")
 
 def show(request):
-    if request.user.is_authenticated:
         items = wishlist.objects.all()
         return render(request, "store/show.html", {"items": items})
-    else:
-        return redirect('login')
 
 def delete(request, pk):
-    delete_data = get_object_or_404(wishlist, pk=pk)
+    item = get_object_or_404(wishlist, pk=pk)
     if request.method == "POST":
-        delete_data.delete()
-        messages.success(request,"Items succesfully deleted.")
-        return redirect("store/show.html")
+        # Delete the item if the request method is POST
+        item.delete()
+        messages.success(request, "Item successfully deleted.")
     else:
         messages.error(request, "Deletion can only be performed via POST request.")
-        return redirect("store/show.html")
-   
+    return redirect("store:show")
+
 def updatePage(request, pk):
     update_data = wishlist.objects.get(pk=pk)
     return render(request, "store/update.html", {"updatedata": update_data})
