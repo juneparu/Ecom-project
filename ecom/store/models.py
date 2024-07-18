@@ -3,10 +3,10 @@ from django.contrib.auth.models import User
 import datetime
 
 class Category(models.Model):
-    name= models.CharField(max_length=50)
+    name = models.CharField(max_length=50)
     
-    def _str_(self):
-       return self.name 
+    def __str__(self):
+        return self.name 
    
 class Customer(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
@@ -16,7 +16,7 @@ class Customer(models.Model):
     phone=models.CharField(max_length=50)
     password=models.CharField(max_length=50)
     
-    def _str_(self):
+    def __str__(self):
        return f'{self.first_name} {self.last_name}'
    
    
@@ -24,11 +24,11 @@ class Product(models.Model):
     id = models.AutoField(primary_key=True)
     name=models.CharField(max_length=100)
     price=models.DecimalField(default=0, decimal_places=2 , max_digits=6)
-    category=models.ForeignKey(Category, on_delete=models.CASCADE, default=1)
+    category=models.ForeignKey(Category, on_delete=models.CASCADE, related_name='products')
     description=models.CharField(max_length=250, default='', blank=True ,null=True)
     image=models.ImageField(upload_to='uploads/product/')
     
-    def _str_(self):
+    def __str__(self):
        return self.name
    
 class Order(models.Model):
@@ -40,7 +40,7 @@ class Order(models.Model):
     date=models.DateField(default=datetime.datetime.today  )
     status=models.BooleanField(default=False)
     
-    def _str_(self):
+    def __str__(self):
        return self.Product
  
 class wishlist(models.Model):

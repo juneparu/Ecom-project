@@ -679,3 +679,8 @@ Single Product section style start
   color: #999;
   font-style: italic;
 }
+
+.img-round {
+  border-radius: 50%; /* This sets a perfect circle */
+}
+

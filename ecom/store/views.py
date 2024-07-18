@@ -1,6 +1,6 @@
 
 from django.shortcuts import get_object_or_404, render ,redirect
-from .models import Product, wishlist
+from .models import Category, Product, wishlist
 from django.contrib.auth import login, authenticate, logout
 from django.contrib import messages
 from .forms import CustomUserCreationForm, CustomAuthenticationForm
@@ -36,9 +36,11 @@ def logout_view(request):
 
 
 def home(request):
-    products=Product.objects.all()
-    return render(request, "store/home.html", {'products': products})
-
+    products = Product.objects.all()  # Get all products
+    foodie_category = Product.objects.filter(category=5)  
+    context = {'products': products, 'foodie_products': foodie_category}
+    return render(request, 'store/home.html', context)
+ 
 def insert(request):
     if request.method == "POST":
         # Assuming 'addwish' contains the product ID

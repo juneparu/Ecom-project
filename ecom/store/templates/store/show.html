@@ -42,8 +42,17 @@
               {% for item in items %}
              <div class="swiper-slide">
                   <div class="card position-relative">
-                    <a href="single-product.html"><img src="{{ item.product.image.url }}" class="img-fluid rounded-4" alt="image"></a>
-                    <div class="card-body p-0">
+                   {% comment %} <img src="{{ product.image.url }}" class="img-fluid rounded-4" alt="image"></a> {% endcomment %}
+                   {% if product %}
+                   <h1>Product Details</h1>
+                   <img src="{{ product.image.url }}" class="img-fluid rounded-4" alt="{{ product.name }}">
+                   <div class="card-text">
+                       </div>
+               {% else %}
+                   <h1>Product Not Found</h1>
+                   <p>The requested product could not be located.</p>
+               {% endif %}
+                   <div class="card-body p-0">
                         <a href="single-product.html">
                             <h3 class="card-title pt-4 m-0">{{ product.name }}</h3>
                         </a>
@@ -65,7 +74,7 @@
                                 <a href="{% url 'show' %}" class="btn-wishlist px-4 pt-3 ">
                                     <iconify-icon icon="fluent:heart-28-filled" class="fs-5"></iconify-icon>
                                 </a>
-                                <form action="{% url 'delete' product.pk %}" method="post" style="display:inline;">
+                                <form action="{% url 'delete' item.pk %}" method="post" style="display:inline;">
                                     {% csrf_token %}
                                     <button type="submit" class="btn btn-danger btn-cart me-3 px-4 pt-3 pb-3">Delete</button>
                                 </form>
@@ -90,5 +99,7 @@
   <script src="{% static 'store/js/plugins.js' %}"></script>
   <script src="{% static 'store/js/script.js' %}"></script>
   <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@iconify/iconify@latest/dist/iconify.min.js"></script>
+
 </body>
 </html>
