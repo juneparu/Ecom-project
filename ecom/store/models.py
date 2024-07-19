@@ -25,6 +25,7 @@ class Product(models.Model):
     name=models.CharField(max_length=100)
     price=models.DecimalField(default=0, decimal_places=2 , max_digits=6)
     category=models.ForeignKey(Category, on_delete=models.CASCADE, related_name='products')
+    quantity=models.IntegerField(default=1)
     description=models.CharField(max_length=250, default='', blank=True ,null=True)
     image=models.ImageField(upload_to='uploads/product/')
     
@@ -52,4 +53,13 @@ class wishlist(models.Model):
     
     def __str__(self):
         return f"{self.Customer} - {self.Product}"
+
+class CartItem(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField(default=1)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, default=None ) 
+    
+    def get_total(self):
+        return self.quantity * self.product.price
+    
     
