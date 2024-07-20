@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+{% load static %}
+{% load crispy_forms_tags %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <link rel="stylesheet" href="{% static 'store/css/style.css' %}">
+</head>
+<body>
+    <h1>Login</h1>
+    {% if error %}
+        <p>{{ error }}</p>
+    {% endif %}
+    <form method="post">
+        {% csrf_token %}
+        <label for="username">Username:</label>
+        <input type="text" name="username" id="username" required>
+        <label for="password">Password:</label>
+        <input type="password" name="password" id="password" required>
+        <button type="submit">Login</button>
+    </form>
+</body>
+</html>
