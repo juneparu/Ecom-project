@@ -36,9 +36,7 @@ def logout_view(request):
 
 
 def home(request):
-<<<<<<< HEAD
     return render(request ,"home.html",{})
-=======
     products = Product.objects.all()  # Get all products
     foodie_category = Product.objects.filter(category=5)  
     context = {'products': products, 'foodie_products': foodie_category}
@@ -143,5 +141,3 @@ def single_product(request, product_id):
     context = {'product': product} 
     return render(request, 'store/single_product.html', context) 
 
-    
->>>>>>> f5d05fd35d7a467215f6d2e0008bbd1bf1f7dbd2
