@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 {% load static %}
+{% load crispy_forms_tags %}
 <html lang="en">
 
 <head>
@@ -290,7 +291,7 @@
             <div class="d-none d-lg-flex align-items-end">
               <ul class="d-flex justify-content-end list-unstyled m-0">
                 <li>
-                  <a href="account.html" class="mx-3">
+                  <a href="{% url 'login' %}" class="mx-3">
                     <iconify-icon icon="healthicons:person" class="fs-4"></iconify-icon>
                   </a>
                 </li>
@@ -795,7 +796,7 @@
               -10%
             </div>
             <div class="card position-relative">
-              <a href="single-product.html"><img src="store/images/item3.jpg" class="img-fluid rounded-4" alt="image"></a>
+              <a href="single-product.html"><img src="{%static 'store/images/item3.jpg' %}" class="img-fluid rounded-4" alt="image"></a>
               <div class="card-body p-0">
                 <a href="single-product.html">
                   <h3 class="card-title pt-4 m-0">Grey hoodie</h3>
@@ -832,7 +833,7 @@
               New
             </div> -->
             <div class="card position-relative">
-              <a href="single-product.html"><img src="images/item4.jpg" class="img-fluid rounded-4" alt="image"></a>
+              <a href="single-product.html"><img src="{%static 'images/item4.jpg' %}" class="img-fluid rounded-4" alt="image"></a>
               <div class="card-body p-0">
                 <a href="single-product.html">
                   <h3 class="card-title pt-4 m-0">Grey hoodie</h3>
@@ -926,7 +927,7 @@
 
           </div>
           <div class="card position-relative">
-            <a href="single-post.html"><img src="images/blog1.jpg" class="img-fluid rounded-4" alt="image"></a>
+            <a href="single-post.html"><img src="{%static 'images/blog1.jpg' %}" class="img-fluid rounded-4" alt="image"></a>
             <div class="card-body p-0">
               <a href="single-post.html">
                 <h3 class="card-title pt-4 pb-3 m-0">10 Reasons to be helpful towards any animals</h3>
@@ -949,7 +950,7 @@
 
           </div>
           <div class="card position-relative">
-            <a href="single-post.html"><img src="store/images/blog2.jpg" class="img-fluid rounded-4" alt="image"></a>
+            <a href="single-post.html"><img src="{%static 'store/images/blog2.jpg' %}" class="img-fluid rounded-4" alt="image"></a>
             <div class="card-body p-0">
               <a href="single-post.html">
                 <h3 class="card-title pt-4 pb-3 m-0">How to know your pet is hungry</h3>
@@ -1103,7 +1104,7 @@
 
         <div class="col-md-3">
           <div class="footer-menu">
-            <img src="store/images/logo.png" alt="logo">
+            <img src="{%static 'store/images/logo.png" alt="logo"'  %}">
             <p class="blog-paragraph fs-6 mt-3">Subscribe to our newsletter to get updates about our grand offers.</p>
             <div class="social-links">
               <ul class="d-flex list-unstyled gap-2">
