@@ -3,6 +3,7 @@ from django.shortcuts import get_object_or_404, render ,redirect
 from .models import CartItem, Category, Product, wishlist
 from django.contrib.auth import login, authenticate, logout
 from django.contrib import messages
+from decimal import Decimal
 from .forms import CustomUserCreationForm, CustomAuthenticationForm
 
 def register(request):
@@ -92,8 +93,20 @@ def cart(request):
         cart_items = CartItem.objects.filter(user=request.user)
     else:
         cart_items = request.session.get('cart', {})  # Fallback to session cart (optional)
-    total_price = sum(item.product.price * item.quantity for item in cart_items)
-    context = {'cart_items': cart_items, 'total_price': total_price}
+    
+    for item in cart_items:
+        item.total_price = item.product.price * item.quantity
+
+    total_price = sum(Decimal(item.product.price) * item.quantity for item in cart_items)
+    tax = total_price * Decimal('0.10')
+    total = total_price + tax
+    context = {
+        'cart_items': cart_items,
+        'total_price': total_price,
+        'tax': tax,
+        'total': total
+    }
+
     return render(request, 'store/cart.html', context)
 
 def add_to_cart(request, product_id):
@@ -112,10 +125,12 @@ def add_to_cart(request, product_id):
     # Handle adding to session cart (optional)
     cart = request.session.get('cart', {})
     cart_item_id = str(product.id)  # Use a unique identifier for session cart items
-    cart[cart_item_id] = {'product_id': product.id, 'quantity': 1}
-    request.session['cart'] = cart
-
-  return redirect('store/cart')
+    if cart_item_id in cart:
+        cart[cart_item_id]['quantity'] += 1
+    else:
+        cart[cart_item_id] = {'product_id': product.id, 'quantity': 1}
+        request.session['cart'] = cart
+  return redirect('cart')
 
 # Optional: view for removing items
 def remove_from_cart(request, item_id):
