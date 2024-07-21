@@ -13,94 +13,115 @@
   <h1>Your Shopping Cart</h1>
 
   {% if cart_items %}
-    <table>
+    <table class="table">
       <thead>
         <tr>
           <th>Product</th>
           <th>Quantity</th>
+          <th>Price</th>
+          <th>Total Price</th>
           <th>Action</th>
         </tr>
       </thead>
       <tbody>
         {% for item in cart_items %}
-          <tr>
+          <tr data-product-id="{{ item.product.id }}" data-price="{{ item.product.price }}">
             <td>{{ item.product.name }}</td>
             <td>
-              <input type="number" min="1" value="{{ item.quantity }}" id="quantity-{{ item.product.id }}">
+              <input type="number" min="1" value="{{ item.quantity }}" id="quantity-{{ item.product.id }}" class="quantity-input">
             </td>
+            <td>${{ item.product.price }}</td>
+            <td class="item-total-price">${{ item.total_price|floatformat:2 }}</td>
             <td>
-              <a href="#" data-product-id="{{ item.product.id }}" class="remove-item-link">Remove</a>
-              <button data-product-id="{{ item.product.id }}">Update</button>
+              <a href="{% url 'remove_from_cart' item.id %}" class="remove-item-link">Remove</a>
             </td>
           </tr>
         {% endfor %}
       </tbody>
     </table>
-
     <div class="cart-summary">
-      <p>Subtotal: $<span id="subtotal">0.00</span></p>
-      <p>Tax: $<span id="tax">0.00</span></p>
-      <p><strong>Total: $<span id="total">0.00</span></strong></p>
-      <button type="button" id="checkout-btn" disabled>Checkout</button>
+      <p>Subtotal: $<span id="subtotal">{{ total_price|floatformat:2 }}</span></p>
+      <p>Tax: $<span id="tax">{{ tax|floatformat:2 }}</span></p>
+      <p><strong>Total: $<span id="total">{{ total|floatformat:2 }}</span></strong></p>
+      <button type="button" id="checkout-btn" {% if not cart_items %}disabled{% endif %}>Checkout</button>
     </div>
   {% else %}
     <p>Your cart is currently empty.</p>
   {% endif %}
 
   <script>
-    // Replace with your actual logic and calculations
-    const cartItems = document.querySelector('tbody');
-    const subtotalEl = document.getElementById('subtotal');
-    const taxEl = document.getElementById('tax');
-    const totalEl = document.getElementById('total');
-    const checkoutBtn = document.getElementById('checkout-btn');
+    document.addEventListener('DOMContentLoaded', () => {
+      const cartItems = document.querySelectorAll('tbody tr');
+      const subtotalEl = document.getElementById('subtotal');
+      const taxEl = document.getElementById('tax');
+      const totalEl = document.getElementById('total');
+      const checkoutBtn = document.getElementById('checkout-btn');
+      const taxRate = 0.10; // Example tax rate
 
-    // Function to update cart summary
-    function updateCartSummary() {
-      let subtotal = 0;
-      // Calculate subtotal based on cart items (replace with your logic)
-      subtotalEl.textContent = subtotal.toFixed(2);
+      function updateCartSummary() {
+        let subtotal = 0;
 
-      // Assuming a fixed 10% tax rate for simplicity
-      const tax = subtotal * 0.10;
-      taxEl.textContent = tax.toFixed(2);
+        cartItems.forEach(item => {
+          const itemTotalPriceEl = item.querySelector('.item-total-price');
+          const itemTotalPrice = parseFloat(itemTotalPriceEl.textContent.replace('$', ''));
+          subtotal += itemTotalPrice;
+        });
 
-      const total = subtotal + tax;
-      totalEl.textContent = total.toFixed(2);
-    }
-
-    // Functionality to remove items
-    cartItems.addEventListener('click', (event) => {
-      if (event.target.classList.contains('remove-item-link')) {
-        const productId = event.target.dataset.productId;
-
-        // Send AJAX request to remove item from cart
-        fetch(`/remove-from-cart/${productId}`, {
-          method: 'DELETE',
-          headers: {
-            'Content-Type': 'application/json',
-            // Add CSRF token if required by your Django settings
-          },
-        })
-          .then(response => response.json())
-          .then(data => {
-            if (data.success) {
-              // Remove the item row from the table
-              event.target.parentElement.parentElement.remove();
-              updateCartSummary(); // Recalculate summary
-              
-              // Check if any items remain and disable checkout button if necessary
-              checkoutBtn.disabled = !cartItems.hasChildNodes();
-            } else {
-              // Handle error (e.g., display an error message)
-              console.error('Error removing item from cart:', data.error);
-            }
-          })
-          .catch(error => {
-            console.error('Error removing item from cart:', error);
-          });
+        subtotalEl.textContent = subtotal.toFixed(2);
+        const tax = subtotal * taxRate;
+        taxEl.textContent = tax.toFixed(2);
+        const total = subtotal + tax;
+        totalEl.textContent = total.toFixed(2);
       }
-    });
 
-    // Functionality to update cart quantities (replace with AJAX calls to your Django views)
-    cartItems
+      cartItems.forEach(item => {
+        const quantityInput = item.querySelector('.quantity-input');
+        const price = parseFloat(item.dataset.price);
+
+        quantityInput.addEventListener('input', () => {
+          const quantity = parseInt(quantityInput.value);
+          const itemTotalPrice = price * quantity;
+          const itemTotalPriceEl = item.querySelector('.item-total-price');
+          itemTotalPriceEl.textContent = `$${itemTotalPrice.toFixed(2)}`;
+
+          updateCartSummary();
+        });
+      });
+
+      // Functionality to remove items
+      cartItems.addEventListener('click', (event) => {
+        if (event.target.classList.contains('remove-item-link')) {
+          event.preventDefault();
+          const productId = event.target.dataset.productId;
+
+          // Send AJAX request to remove item from cart
+          fetch(`/remove-from-cart/${productId}`, {
+            method: 'DELETE',
+            headers: {
+              'Content-Type': 'application/json',
+              // Add CSRF token if required by your Django settings
+            },
+          })
+            .then(response => response.json())
+            .then(data => {
+              if (data.success) {
+                // Remove the item row from the table
+                event.target.parentElement.parentElement.remove();
+                updateCartSummary(); // Recalculate summary
+                
+                // Check if any items remain and disable checkout button if necessary
+                checkoutBtn.disabled = !cartItems.hasChildNodes();
+              } else {
+                // Handle error (e.g., display an error message)
+                console.error('Error removing item from cart:', data.error);
+              }
+            })
+            .catch(error => {
+              console.error('Error removing item from cart:', error);
+            });
+        }
+      });
+    });
+  </script>
+</body>
+</html>

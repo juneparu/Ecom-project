@@ -460,7 +460,7 @@
 
                     <h3 class="secondary-font text-primary">${{ product.price }}</h3>
                     <div class="d-flex flex-wrap mt-3">
-                        <a href="{% url 'cart' %}" class="btn-cart me-3 px-2 pt-2 pb-2">
+                        <a href="{% url 'add_to_cart' product.id  %}" class="btn-cart me-3 px-2 pt-2 pb-2">
                             <h5 class="text-uppercase m-0">Add to Cart</h5>
                         </a>
                         <a href="{% url 'show'  %}" class="btn-wishlist px-3 pt-2">
@@ -528,7 +528,7 @@
       
                           <h3 class="secondary-font text-primary">${{ product.price }}</h3>
                           <div class="d-flex flex-wrap mt-1">
-                              <a href="{% url 'cart' %}" class="btn-cart me-3 px-2 pt-2 pb-2">
+                              <a href="{% url 'add_to_cart' product.id  %}" class="btn-cart me-3 px-2 pt-2 pb-2">
                                   <h5 class="text-uppercase m-0">Add to Cart</h5>
                               </a>
                               <a href="{% url 'show'  %}" class="btn-wishlist px-3 pt-2">
