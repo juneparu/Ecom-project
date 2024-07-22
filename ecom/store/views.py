@@ -1,10 +1,12 @@
-
 from django.shortcuts import get_object_or_404, render ,redirect
 from .models import CartItem, Category, Product, wishlist
-from django.contrib.auth import login, authenticate, logout
+# from django.contrib.auth import login, authenticate, logout
+from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
+from .forms import CustomAuthenticationForm
 from django.contrib import messages
 from decimal import Decimal
 from .forms import CustomUserCreationForm, CustomAuthenticationForm
+
 
 def register(request):
     if request.method == 'POST':
@@ -19,27 +21,49 @@ def register(request):
         form = CustomUserCreationForm()
     return render(request, 'store/register.html', {'form': form})
 
+# def login(request):
+#     if request.method == 'POST':
+#         form = CustomAuthenticationForm(request, data=request.POST)
+#         if form.is_valid():
+#             user = authenticate(username=form.cleaned_data['username'], password=form.cleaned_data['password'])
+#             if user is not None:
+#                 #login(request, user)
+#                 return redirect('home')
+#     else:
+#         form = CustomAuthenticationForm()
+#     return render(request, 'store/login.html', {'form': form})
+
+# def logout_view(request):
+#     if request.method == 'POST':
+#         logout(request)
+#         return redirect(request, 'home')
+#     else:
+#         return redirect(request, 'home')
+
 def login(request):
     if request.method == 'POST':
         form = CustomAuthenticationForm(request, data=request.POST)
         if form.is_valid():
             user = authenticate(username=form.cleaned_data['username'], password=form.cleaned_data['password'])
             if user is not None:
-                #login(request, user)
-                return redirect('home')
+                auth_login(request, user)  # Call the login function
+                return redirect('home')  # Redirect to home after login
     else:
         form = CustomAuthenticationForm()
     return render(request, 'store/login.html', {'form': form})
 
+
 def logout_view(request):
-    logout(request)
-    return redirect('home')
+    if request.method == 'POST':
+        auth_logout(request)  # Call the logout function
+        return redirect(request, 'home')  # Redirect to home after logout
+    else:
+        return redirect(request, 'home')
 
 
 def home(request):
-    return render(request ,"home.html",{})
     products = Product.objects.all()  # Get all products
-    foodie_category = Product.objects.filter(category=5)  
+    foodie_category = Product.objects.filter(category=5)
     context = {'products': products, 'foodie_products': foodie_category}
     return render(request, 'store/home.html', context)
  
@@ -55,6 +79,7 @@ def insert(request):
             return redirect("store:show")
     return redirect("store:home")
 
+ 
 def show(request):
         items = wishlist.objects.all()
         return render(request, "store/show.html", {"items": items})
@@ -68,6 +93,10 @@ def delete(request, pk):
     else:
         messages.error(request, "Deletion can only be performed via POST request.")
     return redirect("store:show")
+
+def add_to_wishlist(request, product_id):
+    product = get_object_or_404(Product, id=product_id)
+    wishlist, created = wishlist.objects.get_or_create(user=request.user, product=product)
 
 def updatePage(request, pk):
     update_data = wishlist.objects.get(pk=pk)
@@ -83,18 +112,18 @@ def checkb(request, pk):
     checkbox = wishlist.objects.get(pk=pk)
     checkbox.is_checked = request.POST.get('check') == "on"
     checkbox.save()
-    return redirect('store/show.html')   
+    return redirect('store/show.html')
 
 def about_us(request):
     context = {}  # Create an empty context dictionary to pass data to the template (optional)
-    return render(request, 'store/about_us.html', context)  
+    return render(request, 'store/about_us.html', context)
 
 def cart(request):
     if request.user.is_authenticated:
         cart_items = CartItem.objects.filter(user=request.user)
     else:
         cart_items = request.session.get('cart', {})  # Fallback to session cart (optional)
-    
+
     for item in cart_items:
         item.total_price = item.product.price * item.quantity
 
@@ -153,6 +182,6 @@ def single_product(request, product_id):
         # Handle case where product with the given ID doesn't exist (e.g., display 404)
         return render(request, '404.html')  # Replace with your error handling logic
 
-    context = {'product': product} 
-    return render(request, 'store/single_product.html', context) 
+    context = {'product': product}
+    return render(request, 'store/single_product.html', context)
 
