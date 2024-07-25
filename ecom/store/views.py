@@ -41,16 +41,25 @@ def register(request):
 #         return redirect(request, 'home')
 
 def login(request):
+    # if request.method == 'POST':
+    #     form = CustomAuthenticationForm(request, data=request.POST)
+    #     if form.is_valid():
+    #         user = authenticate(username=form.cleaned_data['username'], password=form.cleaned_data['password'])
+    #         if user is not None:
+    #             auth_login(request, user)  # Call the login function
+    #             return redirect('home')  # Redirect to home after login
+    error = None
     if request.method == 'POST':
-        form = CustomAuthenticationForm(request, data=request.POST)
-        if form.is_valid():
-            user = authenticate(username=form.cleaned_data['username'], password=form.cleaned_data['password'])
-            if user is not None:
-                auth_login(request, user)  # Call the login function
-                return redirect('home')  # Redirect to home after login
-    else:
-        form = CustomAuthenticationForm()
-    return render(request, 'store/login.html', {'form': form})
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            auth_login(request, user)
+            return redirect('home')  # Redirect to a success page.
+        else:
+            error = "Invalid username or password."
+            # form = CustomAuthenticationForm()
+    return render(request, 'store/login.html', {'error': error})
 
 
 def logout_view(request):
@@ -184,4 +193,9 @@ def single_product(request, product_id):
 
     context = {'product': product}
     return render(request, 'store/single_product.html', context)
+
+def home(request):
+    query = request.GET.get('q')
+    results = Product.objects.filter(name__icontains=query) if query else None
+    return render(request, 'store/home.html', {'results': results, 'query': query})
 
