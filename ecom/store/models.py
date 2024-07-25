@@ -43,16 +43,6 @@ class Order(models.Model):
     
     def __str__(self):
        return self.Product
- 
-class wishlist(models.Model):
-    Product=models.ForeignKey(Product, on_delete=models.CASCADE ,default=1 )
-    Customer=models.ForeignKey(Customer, on_delete=models.CASCADE, default=1 )
-    quantity=models.IntegerField(default=1)
-    date_added = models.DateTimeField(default=datetime.datetime.today )
-    is_available = models.BooleanField(default=True)
-    
-    def __str__(self):
-        return f"{self.Customer} - {self.Product}"
 
 class CartItem(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)

@@ -1,10 +1,15 @@
 
 from django.shortcuts import get_object_or_404, render ,redirect
-from .models import CartItem, Category, Product, wishlist
+from django.views import View
+from .models import CartItem, Category, Product
 from django.contrib.auth import login, authenticate, logout
 from django.contrib import messages
 from decimal import Decimal
+from django.conf import settings
 from .forms import CustomUserCreationForm, CustomAuthenticationForm
+import stripe
+
+stripe.api_key = settings.STRIPE_SECRET_KEY
 
 def register(request):
     if request.method == 'POST':
@@ -41,48 +46,6 @@ def home(request):
     foodie_category = Product.objects.filter(category=5)  
     context = {'products': products, 'foodie_products': foodie_category}
     return render(request, 'store/home.html', context)
- 
-def insert(request):
-    if request.method == "POST":
-        # Assuming 'addwish' contains the product ID
-        product_id = request.POST.get('addwish')
-        if product_id:
-            # Assuming you have a Product model with id field
-            product = Product.objects.get(pk=product_id)
-            # Create a new WishlistItem for the authenticated user
-            wishlist.objects.create(user=request.user, product=product)
-            return redirect("store:show")
-    return redirect("store:home")
-
-def show(request):
-        items = wishlist.objects.all()
-        return render(request, "store/show.html", {"items": items})
-
-def delete(request, pk):
-    item = get_object_or_404(wishlist, pk=pk)
-    if request.method == "POST":
-        # Delete the item if the request method is POST
-        item.delete()
-        messages.success(request, "Item successfully deleted.")
-    else:
-        messages.error(request, "Deletion can only be performed via POST request.")
-    return redirect("store:show")
-
-def updatePage(request, pk):
-    update_data = wishlist.objects.get(pk=pk)
-    return render(request, "store/update.html", {"updatedata": update_data})
-
-def update(request, pk):
-    update_data = wishlist.objects.get(pk=pk)
-    update_data.wishlist = request.POST['updatewish']
-    update_data.save()
-    return redirect("store/show.html")
-
-def checkb(request, pk):
-    checkbox = wishlist.objects.get(pk=pk)
-    checkbox.is_checked = request.POST.get('check') == "on"
-    checkbox.save()
-    return redirect('store/show.html')   
 
 def about_us(request):
     context = {}  # Create an empty context dictionary to pass data to the template (optional)
@@ -154,5 +117,42 @@ def single_product(request, product_id):
 
     context = {'product': product} 
     return render(request, 'store/single_product.html', context) 
+
+
+class PaymentView(View):
+    def get(self, request):
+        cart_items = request.session.get('cart_items', [])
+
+        return render(request, 'store/payment.html', {
+            'STRIPE_PUBLIC_KEY': settings.STRIPE_PUBLIC_KEY,
+            'cart_items': cart_items
+        })
+
+    def post(self, request):
+        token = request.POST.get('stripeToken')
+        amount = int(request.POST.get('amount'))  # Amount in cents
+
+        try:
+            charge = stripe.Charge.create(
+                amount=amount,
+                currency='usd',
+                source=token,
+                description='My E-commerce Payment'
+            )
+            return redirect('success')
+        except stripe.error.StripeError:
+            return redirect('failure')
+        
+def success_view(request):
+    return render(request, 'store/success.html')
+
+def failure_view(request):
+    return render(request, 'store/failure.html')  
+
+def pet(request):
+    products = Product.objects.all()  # Get all products
+    foodie_category = Product.objects.filter(category=5)  
+    context = {'products': products, 'foodie_products': foodie_category}
+    return render(request, 'store/pet.html',context)      
 
     
