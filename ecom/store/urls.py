@@ -1,5 +1,5 @@
-from django.urls import path
-from . import views
+from django.urls import path, include
+from store import views
 from .views import home
 from django.contrib.auth.views import LogoutView
 
@@ -21,5 +21,6 @@ urlpatterns = [
     path('add-to-cart/<int:product_id>/', views.add_to_cart, name='add_to_cart'),
     # Optional URL for removing items
     path('remove-from-cart/<int:item_id>/', views.remove_from_cart, name='remove_from_cart'),
-    path('product/<int:product_id>/', views.single_product, name='single_product')
+    path('product/<int:product_id>/', views.single_product, name='single_product'),
+    path('captcha/', include('captcha.urls')),
 ]

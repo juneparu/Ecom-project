@@ -41,13 +41,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Chilanka&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            {% if error %}
-                alert("{{ error }}");
-            {% endif %}
-        });
-    </script> 
+    
+    
     <style>
         .input-large {
             width: 500px;
@@ -56,7 +51,7 @@
             padding: 10px; 
         }
     </style>
-   
+        <script src="https://www.google.com/recaptcha/enterprise.js?render=6LeaFBgqAAAAAGvfxP0yRnx7YKCcuVGXhvrS8okg"></script>
 </head>
 <body>
     <header>
@@ -81,14 +76,25 @@
                             {{ error }}
                         </div>
                         {% endif %}
-                        <form method="post">
-                            {% csrf_token %}
-                            <label for="username">Username:</label><br>
-                            <input type="text" name="username" id="username" class="input-large" required><br><br>
-                            <label for="password">Password:</label><br>
-                            <input type="password" name="password" id="password" class="input-large" required><br><br><br>
+
+                        {% comment %} <form method="post"> {% endcomment %}
+                            {% comment %} {% csrf_token %}
+                            {{ form.as_p }} {% endcomment %}
+                            <form action="?" method="POST">
+                             {% csrf_token %}
+                             {{ form.as_p }}
+                             {% comment %} {{ form.as_p }} {% endcomment %}
+                           {% comment %} <label for="username">Username:</label><br>
+                             <input type="text" name="username" id="username" class="input-large" required><br><br>
+                             <label for="password">Password:</label><br>
+                             <input type="password" name="password" id="password" class="input-large" required><br><br><br> {% endcomment %}
+                            <div class="g-recaptcha" data-sitekey="6LeaFBgqAAAAAGvfxP0yRnx7YKCcuVGXhvrS8okg"></div>   <br></br>
+                                 {% comment %} <button type="submit">Submit</button> <br></br> {% endcomment %}
+
                             <button type="submit" class="btn btn-primary">Login</button>
                         </form>
+                        <script src="https://www.recaptcha.net/recaptcha/api.js"></script>
+
                     {% endif %}
                 </div>
             </div>

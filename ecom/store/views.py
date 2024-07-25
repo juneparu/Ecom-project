@@ -7,6 +7,11 @@ from django.contrib import messages
 from decimal import Decimal
 from .forms import CustomUserCreationForm, CustomAuthenticationForm
 
+from django.conf import settings
+
+import requests
+
+
 
 def register(request):
     if request.method == 'POST':
@@ -40,26 +45,90 @@ def register(request):
 #     else:
 #         return redirect(request, 'home')
 
+def verify_recaptcha(token):
+    """Verify the reCAPTCHA token with Google"""
+    secret_key =  '6LeaFBgqAAAAACcpJhAzZiYZ0_8AcbtgI2LhO3lO' # Replace with your actual secret key
+    url = 'https://www.google.com/recaptcha/api/siteverify'
+    data = {
+        'secret': secret_key,
+        'response': token
+    }
+    response = requests.post(url, data=data)
+    result = response.json()
+    return result.get('success', False)
+
+
 def login(request):
-    # if request.method == 'POST':
-    #     form = CustomAuthenticationForm(request, data=request.POST)
-    #     if form.is_valid():
-    #         user = authenticate(username=form.cleaned_data['username'], password=form.cleaned_data['password'])
-    #         if user is not None:
-    #             auth_login(request, user)  # Call the login function
-    #             return redirect('home')  # Redirect to home after login
     error = None
+    form = CustomAuthenticationForm()
+
     if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-        user = authenticate(request, username=username, password=password)
-        if user is not None:
-            auth_login(request, user)
-            return redirect('home')  # Redirect to a success page.
+        form = CustomAuthenticationForm(request.POST)
+        if form.is_valid():
+            captcha_token = request.POST.get('g-recaptcha-response')
+            if verify_recaptcha(captcha_token):
+                username = form.cleaned_data.get('username')
+                password = form.cleaned_data.get('password')
+                user = authenticate(request, username=username, password=password)
+                if user is not None:
+                    auth_login(request, user)
+                    return redirect('home')  # Redirect to a success page.
+                else:
+                    error = "Invalid username or password."
+            else:
+                error = "Invalid CAPTCHA. Please try again."
         else:
-            error = "Invalid username or password."
-            # form = CustomAuthenticationForm()
-    return render(request, 'store/login.html', {'error': error})
+            error = "Invalid form submission."
+
+    return render(request, 'store/login.html', {'form': form, 'error': error})
+    
+    # error = None
+    # form = CustomAuthenticationForm()
+
+    # if request.method == 'POST':
+    #     form = CustomAuthenticationForm(request.POST)
+    #     if form.is_valid():
+    #         captcha_token = form.cleaned_data.get('captcha')
+    #         if verify_recaptcha(captcha_token):
+    #             username = form.cleaned_data.get('username')
+    #             password = form.cleaned_data.get('password')
+    #             user = authenticate(request, username=username, password=password)
+    #             if user is not None:
+    #                 auth_login(request, user)
+    #                 return redirect('home')  # Redirect to a success page.
+    #             else:
+    #                 error = "Invalid username or password."
+    #         else:
+    #             error = "Invalid CAPTCHA. Please try again."
+    #     else:
+    #         error = "Invalid form submission."
+
+    # return render(request, 'store/login.html', {'form': form, 'error': error})
+
+
+# def login(request):
+#     error = None
+#     form = LoginForm()
+#     if request.method == 'POST':
+#         form = LoginForm(request.POST)
+#             if form.is_valid():
+#              captcha_token = request.POST.get('captcha-token')
+#                 if verify_recaptcha(captcha_token):
+#                     username = form.cleaned_data.get('username')
+#                     password = form.cleaned_data.get('password')
+#                     user = authenticate(request, username=username, password=password)
+#                     if user is not None:
+#                         auth_login(request, user)
+#                         return redirect('home')  # Redirect to a success page.
+#                     else:
+#                         error = "Invalid username or password."
+#                 else:
+#                     error = "Invalid CAPTCHA. Please try again."
+#             else:
+#                 error = "Invalid form submission."
+
+#     return render(request, 'store/login.html', {'form': form, 'error': error})
+   
 
 
 def logout_view(request):
