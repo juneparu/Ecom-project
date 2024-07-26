@@ -40,7 +40,11 @@ INSTALLED_APPS = [
     "crispy_forms",
     "crispy_bootstrap4",
     'store',
+    'captcha',
 ]
+
+RECAPTCHA_PUBLIC_KEY = '6LeaFBgqAAAAAGvfxP0yRnx7YKCcuVGXhvrS8okg'
+RECAPTCHA_PRIVATE_KEY = '6LeaFBgqAAAAACcpJhAzZiYZ0_8AcbtgI2LhO3lO'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

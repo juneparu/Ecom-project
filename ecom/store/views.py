@@ -1,13 +1,15 @@
 
+from urllib import request
 from django.shortcuts import get_object_or_404, render ,redirect
 from django.views import View
 from .models import CartItem, Category, Product
-from django.contrib.auth import login, authenticate, logout
+from django.contrib.auth import login as auth_login, authenticate, logout as auth_logout
 from django.contrib import messages
 from decimal import Decimal
 from django.conf import settings
 from .forms import CustomUserCreationForm, CustomAuthenticationForm
 import stripe
+import requests
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
@@ -25,23 +27,49 @@ def register(request):
     return render(request, 'store/register.html', {'form': form})
 
 def login(request):
+    error = None
+    form = CustomAuthenticationForm()
     if request.method == 'POST':
-        form = CustomAuthenticationForm(request, data=request.POST)
+        form = CustomAuthenticationForm(request.POST)
         if form.is_valid():
-            user = authenticate(username=form.cleaned_data['username'], password=form.cleaned_data['password'])
-            if user is not None:
-                #login(request, user)
-                return redirect('home')
-    else:
-        form = CustomAuthenticationForm()
-    return render(request, 'store/login.html', {'form': form})
+            captcha_token = request.POST.get('g-recaptcha-response')
+            if verify_recaptcha(captcha_token):
+                username = form.cleaned_data.get('username')
+                password = form.cleaned_data.get('password')
+                user = authenticate(request, username=username, password=password)
+                if user is not None:
+                    auth_login(request, user)
+                    return redirect('home')  # Redirect to a success page.
+                else:
+                    error = "Invalid username or password."
+            else:
+                error = "Invalid CAPTCHA. Please try again."
+        else:
+            error = "Invalid form submission."
+    return render(request, 'store/login.html', {'form': form, 'error': error})
+
+def verify_recaptcha(token):
+    secret_key =  '6LeaFBgqAAAAACcpJhAzZiYZ0_8AcbtgI2LhO3lO' # Replace with your actual secret key
+    url = 'https://www.google.com/recaptcha/api/siteverify'
+    data = {
+        'secret': secret_key,
+        'response': token
+    }
+    response = requests.post(url, data=data)
+    result = response.json()
+    return result.get('success', False)
 
 def logout_view(request):
-    logout(request)
-    return redirect('home')
+    if request.method == 'POST':
+        auth_logout(request)
+        return redirect('home')
+    
+def profile(request):
+    return render(request, 'store/profile.html', {'user': request.user})
 
 
-def home(request):
+
+def home(request): 
     products = Product.objects.all()  # Get all products
     foodie_category = Product.objects.filter(category=5)  
     context = {'products': products, 'foodie_products': foodie_category}
@@ -153,6 +181,11 @@ def pet(request):
     products = Product.objects.all()  # Get all products
     foodie_category = Product.objects.filter(category=5)  
     context = {'products': products, 'foodie_products': foodie_category}
-    return render(request, 'store/pet.html',context)      
+    return render(request, 'store/pet.html',context) 
+
+def shop(request):
+    products=Product.objects.all()
+    context = {'products': products}
+    return render(request, 'store/shop.html', context)
 
     
