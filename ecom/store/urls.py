@@ -10,12 +10,7 @@ urlpatterns = [
     path('logout/', LogoutView.as_view(next_page='home'), name='logout'),
     path('home/', views.home, name='home'),
     path('home/', home, name='home'),
-    path("show/", views.show, name="show"),
-    path("insert/", views.insert, name="insert"),
-    path("delete/<int:pk>", views.delete, name="delete"),
-    path("updatepage/<int:pk>", views.updatePage, name="updatepage"),
-    path("update/<int:pk>", views.update, name="update"),
-    path("check/<int:pk>", views.checkb, name="check"),
+   
     path('about_us/', views.about_us, name='about_us'),
     path('cart/', views.cart, name='cart'),
     path('add-to-cart/<int:product_id>/', views.add_to_cart, name='add_to_cart'),

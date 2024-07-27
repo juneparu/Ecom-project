@@ -1,5 +1,5 @@
 from django.shortcuts import get_object_or_404, render ,redirect
-from .models import CartItem, Category, Product, wishlist
+from .models import CartItem, Category, Product
 # from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 from .forms import CustomAuthenticationForm
@@ -26,37 +26,17 @@ def register(request):
         form = CustomUserCreationForm()
     return render(request, 'store/register.html', {'form': form})
 
-# def login(request):
-#     if request.method == 'POST':
-#         form = CustomAuthenticationForm(request, data=request.POST)
-#         if form.is_valid():
-#             user = authenticate(username=form.cleaned_data['username'], password=form.cleaned_data['password'])
-#             if user is not None:
-#                 #login(request, user)
-#                 return redirect('home')
-#     else:
-#         form = CustomAuthenticationForm()
-#     return render(request, 'store/login.html', {'form': form})
-
-# def logout_view(request):
-#     if request.method == 'POST':
-#         logout(request)
-#         return redirect(request, 'home')
-#     else:
-#         return redirect(request, 'home')
-
 def verify_recaptcha(token):
     """Verify the reCAPTCHA token with Google"""
-    secret_key =  '6LeaFBgqAAAAACcpJhAzZiYZ0_8AcbtgI2LhO3lO' # Replace with your actual secret key
+    secret_key = '6LeaFBgqAAAAACcpJhAzZiYZ0_8AcbtgI2LhO3lO'  # Replace with your actual secret key
     url = 'https://www.google.com/recaptcha/api/siteverify'
     data = {
         'secret': secret_key,
         'response': token
     }
-    response = requests.post(url, data=data)
+    response = requests.post(url, data=data)  # Use requests.post here
     result = response.json()
     return result.get('success', False)
-
 
 def login(request):
     error = None
@@ -81,116 +61,20 @@ def login(request):
             error = "Invalid form submission."
 
     return render(request, 'store/login.html', {'form': form, 'error': error})
-    
-    # error = None
-    # form = CustomAuthenticationForm()
-
-    # if request.method == 'POST':
-    #     form = CustomAuthenticationForm(request.POST)
-    #     if form.is_valid():
-    #         captcha_token = form.cleaned_data.get('captcha')
-    #         if verify_recaptcha(captcha_token):
-    #             username = form.cleaned_data.get('username')
-    #             password = form.cleaned_data.get('password')
-    #             user = authenticate(request, username=username, password=password)
-    #             if user is not None:
-    #                 auth_login(request, user)
-    #                 return redirect('home')  # Redirect to a success page.
-    #             else:
-    #                 error = "Invalid username or password."
-    #         else:
-    #             error = "Invalid CAPTCHA. Please try again."
-    #     else:
-    #         error = "Invalid form submission."
-
-    # return render(request, 'store/login.html', {'form': form, 'error': error})
-
-
-# def login(request):
-#     error = None
-#     form = LoginForm()
-#     if request.method == 'POST':
-#         form = LoginForm(request.POST)
-#             if form.is_valid():
-#              captcha_token = request.POST.get('captcha-token')
-#                 if verify_recaptcha(captcha_token):
-#                     username = form.cleaned_data.get('username')
-#                     password = form.cleaned_data.get('password')
-#                     user = authenticate(request, username=username, password=password)
-#                     if user is not None:
-#                         auth_login(request, user)
-#                         return redirect('home')  # Redirect to a success page.
-#                     else:
-#                         error = "Invalid username or password."
-#                 else:
-#                     error = "Invalid CAPTCHA. Please try again."
-#             else:
-#                 error = "Invalid form submission."
-
-#     return render(request, 'store/login.html', {'form': form, 'error': error})
-   
-
 
 def logout_view(request):
     if request.method == 'POST':
         auth_logout(request)  # Call the logout function
-        return redirect(request, 'home')  # Redirect to home after logout
+        return redirect('home')  # Redirect to home after logout
     else:
-        return redirect(request, 'home')
-
+        return redirect('home')
 
 def home(request):
     products = Product.objects.all()  # Get all products
     foodie_category = Product.objects.filter(category=5)
     context = {'products': products, 'foodie_products': foodie_category}
     return render(request, 'store/home.html', context)
- 
-def insert(request):
-    if request.method == "POST":
-        # Assuming 'addwish' contains the product ID
-        product_id = request.POST.get('addwish')
-        if product_id:
-            # Assuming you have a Product model with id field
-            product = Product.objects.get(pk=product_id)
-            # Create a new WishlistItem for the authenticated user
-            wishlist.objects.create(user=request.user, product=product)
-            return redirect("store:show")
-    return redirect("store:home")
 
- 
-def show(request):
-        items = wishlist.objects.all()
-        return render(request, "store/show.html", {"items": items})
-
-def delete(request, pk):
-    item = get_object_or_404(wishlist, pk=pk)
-    if request.method == "POST":
-        # Delete the item if the request method is POST
-        item.delete()
-        messages.success(request, "Item successfully deleted.")
-    else:
-        messages.error(request, "Deletion can only be performed via POST request.")
-    return redirect("store:show")
-
-def add_to_wishlist(request, product_id):
-    product = get_object_or_404(Product, id=product_id)
-    wishlist, created = wishlist.objects.get_or_create(user=request.user, product=product)
-
-def updatePage(request, pk):
-    update_data = wishlist.objects.get(pk=pk)
-    return render(request, "store/update.html", {"updatedata": update_data})
-
-def update(request, pk):
-    update_data = wishlist.objects.get(pk=pk)
-    update_data.wishlist = request.POST['updatewish']
-    update_data.save()
-    return redirect("store/show.html")
-
-def checkb(request, pk):
-    checkbox = wishlist.objects.get(pk=pk)
-    checkbox.is_checked = request.POST.get('check') == "on"
-    checkbox.save()
-    return redirect('store/show.html')
 
 def about_us(request):
     context = {}  # Create an empty context dictionary to pass data to the template (optional)
