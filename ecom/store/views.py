@@ -1,6 +1,5 @@
 from django.shortcuts import get_object_or_404, render ,redirect
 from .models import CartItem, Category, Product
-# from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 from .forms import CustomAuthenticationForm
 from django.contrib import messages
@@ -68,6 +67,9 @@ def logout_view(request):
         return redirect('home')  # Redirect to home after logout
     else:
         return redirect('home')
+
+def profile(request):
+    return render(request, 'store/profile.html', {'user': request.user})
 
 def home(request):
     products = Product.objects.all()  # Get all products
