@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Payment</title>
+    <script src="https://js.stripe.com/v3/"></script>
+</head>
+<body>
+    <h2>Payment</h2>
+    <form action="{% url 'payment' %}" method="post" id="payment-form">
+        {% csrf_token %}
+        <input type="hidden" name="amount" value="5000"> <!-- Example amount in cents ($50.00) -->
+        <div id="card-element"></div>
+        <br>
+        <button type="submit">Pay</button>
+    </form>
+
+    <script>
+        var stripe = Stripe('{{ STRIPE_PUBLIC_KEY }}');
+        var elements = stripe.elements();
+        var card = elements.create('card');
+        card.mount('#card-element');
+
+        var form = document.getElementById('payment-form');
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+            stripe.createToken(card).then(function(result) {
+                if (result.error) {
+                    // Display error in the UI
+                } else {
+                    var token = result.token.id;
+                    var input = document.createElement('input');
+                    input.type = 'hidden';
+                    input.name = 'stripeToken';
+                    input.value = token;
+                    form.appendChild(input);
+                    form.submit();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
