@@ -63,6 +63,8 @@ def logout_view(request):
     if request.method == 'POST':
         auth_logout(request)
         return redirect('home')
+    else:
+        return redirect('home')
     
 def profile(request):
     return render(request, 'store/profile.html', {'user': request.user})

@@ -49,7 +49,15 @@
     </form>
     </div>
   {% else %}
-    <p>Your cart is currently empty.</p>
+     <br> 
+     <div class="col-sm-8 col-lg-4 d-flex justify-content-end gap-5 align-items-center mt-4 mt-sm-0 justify-content-center justify-content-sm-end">
+      
+      <p> Create an user account first.</p>
+      <div class="support-box text-end d-none d-xl-block">
+         <a href="{% url 'register' %}" class="btn btn-primary ">Register</a>
+      </div>
+      
+    </div>
   {% endif %}
 
   <script>

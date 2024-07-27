@@ -252,10 +252,14 @@
                     <ul class="dropdown-menu">
                         {% if user.is_authenticated %}
                         <li>
-                         <form action="{% url 'profile' %}" method="post" class="mb-0">
+                         <form action="{% url 'logout' %}" method="post" class="mb-0">
                         {% csrf_token %}
-                           <button type="submit" class="dropdown-item">Profile</button>
+                           <button type="submit" class="dropdown-item">Logout</button>
                           </form>
+                          <form action="{% url 'profile' %}" method="post" class="mb-0">
+                            {% csrf_token %}
+                               <button type="submit" class="dropdown-item">Profile</button>
+                              </form>
                        </li>
                        {% else %}
                           <li><a href="{% url 'login' %}" class="dropdown-item">Login</a></li>
