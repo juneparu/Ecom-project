@@ -287,7 +287,7 @@
         <div class="d-flex d-lg-none align-items-end mt-3">
           <ul class="d-flex justify-content-end list-unstyled m-0">
             <li>
-              <a href="account.html" class="mx-3">
+              <a href="{% url 'login' %}" class="mx-3">
                 <iconify-icon icon="healthicons:person" class="fs-4"></iconify-icon>
                 <option>Login</option>
                 <option>Myorders</option>
@@ -366,19 +366,40 @@
 
             <div class="d-none d-lg-flex align-items-end">
               <ul class="d-flex justify-content-end list-unstyled m-0">
-                <li>
-                  <a href="account.html" class="mx-3">
-                    <iconify-icon icon="healthicons:person" class="fs-4"></iconify-icon>
-                  </a>
-                </li>
+                  <li>
+                      <div class="dropdown">
+                          <a class="nav-link dropdown-toggle mx-3" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                              <iconify-icon icon="healthicons:person" class="fs-4"></iconify-icon>
+                          </a>
+                          <ul class="dropdown-menu">
 
-                <li class="">
-                  <a href="{% url 'cart' %}" class="mx-3" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCart"
-                    aria-controls="offcanvasCart">
-                    <iconify-icon icon="mdi:cart" class="fs-4 position-relative"></iconify-icon>
-                    <span class="position-absolute translate-middle badge rounded-circle bg-primary pt-2">
-                      03
-                    </span>
+                              {% if user.is_authenticated %}
+                              <li>
+                                <form action="{% url 'profile' %}" method="post" class="mb-0">
+                               {% csrf_token %}
+                                  <button type="submit" class="dropdown-item">Profile</button>
+                                 </form>
+                              </li>
+                              <li>
+                               <form action="{% url 'logout' %}" method="post" class="mb-0">
+                              {% csrf_token %}
+                                 <button type="submit" class="dropdown-item">Logout</button>
+                                </form>
+                             </li>
+                             {% else %}
+                                <li><a href="{% url 'login' %}" class="dropdown-item">Login</a></li>
+                            {% endif %}
+                          </ul>
+                      </div>
+                    </li>
+              <li>
+              </li>
+              <li class="nav-item">
+                  <a href="{% url 'cart' %}" class="mx-3" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCart" aria-controls="offcanvasCart">
+                      <iconify-icon icon="mdi:cart" class="fs-4 position-relative"></iconify-icon>
+                      <span class="position-absolute translate-middle badge rounded-circle bg-primary pt-2">
+                          03
+                      </span>
                   </a>
               </li>
           </ul>
