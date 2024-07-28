@@ -1,16 +1,8 @@
-<<<<<<< HEAD
-from django.shortcuts import get_object_or_404, render ,redirect
-from .models import CartItem, Category, Product
-from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
-from .forms import CustomAuthenticationForm
-=======
-
 from urllib import request
 from django.shortcuts import get_object_or_404, render ,redirect
 from django.views import View
 from .models import CartItem, Category, Product
 from django.contrib.auth import login as auth_login, authenticate, logout as auth_logout
->>>>>>> a355bea42849a0ff12a27b5e678e97cb5e22120c
 from django.contrib import messages
 from decimal import Decimal
 from django.conf import settings
@@ -54,10 +46,6 @@ def verify_recaptcha(token):
 def login(request):
     error = None
     form = CustomAuthenticationForm()
-<<<<<<< HEAD
-
-=======
->>>>>>> a355bea42849a0ff12a27b5e678e97cb5e22120c
     if request.method == 'POST':
         form = CustomAuthenticationForm(request.POST)
         if form.is_valid():
@@ -75,17 +63,6 @@ def login(request):
                 error = "Invalid CAPTCHA. Please try again."
         else:
             error = "Invalid form submission."
-<<<<<<< HEAD
-
-    return render(request, 'store/login.html', {'form': form, 'error': error})
-
-def logout_view(request):
-    if request.method == 'POST':
-        auth_logout(request)  # Call the logout function
-        return redirect('home')  # Redirect to home after logout
-    else:
-        return redirect('home')
-=======
     return render(request, 'store/login.html', {'form': form, 'error': error})
 
 def verify_recaptcha(token):
@@ -108,7 +85,6 @@ def logout_view(request):
     
 def profile(request):
     return render(request, 'store/profile.html', {'user': request.user})
->>>>>>> a355bea42849a0ff12a27b5e678e97cb5e22120c
 
 def profile(request):
     return render(request, 'store/profile.html', {'user': request.user})
@@ -119,10 +95,6 @@ def home(request):
     foodie_category = Product.objects.filter(category=5)
     context = {'products': products, 'foodie_products': foodie_category}
     return render(request, 'store/home.html', context)
-<<<<<<< HEAD
-
-=======
->>>>>>> a355bea42849a0ff12a27b5e678e97cb5e22120c
 
 def about_us(request):
     context = {}  # Create an empty context dictionary to pass data to the template (optional)
@@ -200,8 +172,6 @@ def home(request):
     results = Product.objects.filter(name__icontains=query) if query else None
     return render(request, 'store/home.html', {'results': results, 'query': query})
 
-<<<<<<< HEAD
-=======
 
 class PaymentView(View):
     def get(self, request):
@@ -245,4 +215,3 @@ def shop(request):
     return render(request, 'store/shop.html', context)
 
     
->>>>>>> a355bea42849a0ff12a27b5e678e97cb5e22120c
