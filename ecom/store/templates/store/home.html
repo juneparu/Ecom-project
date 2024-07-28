@@ -134,45 +134,9 @@
 
   <div class="offcanvas offcanvas-end" data-bs-scroll="true" tabindex="-1" id="offcanvasCart" aria-labelledby="My Cart">
     <div class="offcanvas-header justify-content-center">
-      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      <button  type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
-    <div class="offcanvas-body">
-      <div class="order-md-last">
-        <h4 class="d-flex justify-content-between align-items-center mb-3">
-          <span class="text-primary">Your cart</span>
-          <span class="badge bg-primary rounded-circle pt-2">3</span>
-        </h4>
-        <ul class="list-group mb-3">
-          <li class="list-group-item d-flex justify-content-between lh-sm">
-            <div>
-              <h6 class="my-0">Grey Hoodie</h6>
-              <small class="text-body-secondary">Brief description</small>
-            </div>
-            <span class="text-body-secondary">$12</span>
-          </li>
-          <li class="list-group-item d-flex justify-content-between lh-sm">
-            <div>
-              <h6 class="my-0">Dog Food</h6>
-              <small class="text-body-secondary">Brief description</small>
-            </div>
-            <span class="text-body-secondary">$8</span>
-          </li>
-          <li class="list-group-item d-flex justify-content-between lh-sm">
-            <div>
-              <h6 class="my-0">Soft Toy</h6>
-              <small class="text-body-secondary">Brief description</small>
-            </div>
-            <span class="text-body-secondary">$5</span>
-          </li>
-          <li class="list-group-item d-flex justify-content-between">
-            <span class="fw-bold">Total (USD)</span>
-            <strong>$20</strong>
-          </li>
-        </ul>
-
-        <button class="w-100 btn btn-primary btn-lg" type="submit">Continue to checkout</button>
-      </div>
-    </div>
+    
   </div>
 
   <div class="offcanvas offcanvas-end" data-bs-scroll="true" tabindex="-1" id="offcanvasSearch"
@@ -202,8 +166,8 @@
 
         <div class="col-sm-4 col-lg-3 text-center text-sm-start">
           <div class="main-logo">
-            <a href="index.html">
-              <img src="{%static 'store/images/logo.png'%}" alt="logo" class="img-fluid">
+            <a href="{% url 'home' %}">
+              <img src="{% static 'store/images/logo.png'%}" alt="logo" class="img-fluid">
             </a>
           </div>
         </div>
@@ -288,6 +252,7 @@
           <ul class="d-flex justify-content-end list-unstyled m-0">
             <li>
 <<<<<<< HEAD
+<<<<<<< HEAD
               <a href="{% url 'login' %}" class="mx-3">
 =======
               <a href="#" class="mx-3">
@@ -297,10 +262,16 @@
                 <option>Myorders</option>
                 <option>Logout</option>
               </a>
+=======
+              <a href="{% url 'profile' %}" class="mx-3">
+                <iconify-icon icon="healthicons:person" class="fs-4"></iconify-icon>
+              </a> 
+              
+>>>>>>> a355bea42849a0ff12a27b5e678e97cb5e22120c
             </li>
             
             <li>
-              <a href="#" class="mx-3" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCart"
+              <a href="{% url 'cart' %}" class="mx-3" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCart"
                 aria-controls="offcanvasCart">
                 <iconify-icon icon="mdi:cart" class="fs-4 position-relative"></iconify-icon>
                 <span class="position-absolute translate-middle badge rounded-circle bg-primary pt-2">
@@ -332,16 +303,10 @@
           </div>
 
           <div class="offcanvas-body justify-content-between">
-            <select class="filter-categories border-0 mb-0 me-5">
-              <option>Shop by Category</option>
-              <option>Clothes</option>
-              <option>Food</option>
-              <option>Toy</option>
-            </select>
-
+            
             <ul class="navbar-nav menu-list list-unstyled d-flex gap-md-3 mb-0">
               <li class="nav-item">
-                <a href="index.html" class="nav-link active">Home</a>
+                <a href="{% url 'home' %}" class="nav-link active">Home</a>
               </li>
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" role="button" id="pages" data-bs-toggle="dropdown"
@@ -349,23 +314,21 @@
                 <ul class="dropdown-menu" aria-labelledby="pages">
                   <li><a href="{% url 'about_us' %}" class="dropdown-item">About Us</a></li>
                   <li><a href="{% url 'cart' %}" class="dropdown-item">Cart</a></li>
+<<<<<<< HEAD
                   {% comment %} <li><a href="{% url 'show' %}" class="dropdown-item">Wishlist</a></li> {% endcomment %}
                   <li><a href="checkout.html" class="dropdown-item">Checkout</a></li>
+=======
+>>>>>>> a355bea42849a0ff12a27b5e678e97cb5e22120c
                   <li><a href="faqs.html" class="dropdown-item">FAQs</a></li>
                 </ul>
               </li>
               <li class="nav-item">
-                <a href="shop.html" class="nav-link">Shop</a>
+                <a href="{% url 'shop' %}" class="nav-link">Shop</a>
               </li>
               <li class="nav-item">
-                <a href="blog.html" class="nav-link">Blog</a>
+                <a href="{% url 'about_us' %}" class="nav-link">About Us</a>
               </li>
-              <li class="nav-item">
-                <a href="contact.html" class="nav-link">Contact</a>
-              </li>
-              <li class="nav-item">
-                <a href="#" class="nav-link">Others</a>
-              </li>
+              
             </ul>
 
             <div class="d-none d-lg-flex align-items-end">
@@ -373,6 +336,7 @@
 <<<<<<< HEAD
 =======
                 <li>
+<<<<<<< HEAD
                   <a href="{% url 'login' %}" class="mx-3">
                     <iconify-icon icon="healthicons:person" class="fs-4"></iconify-icon>
                   </a>
@@ -385,6 +349,36 @@
                               <iconify-icon icon="healthicons:person" class="fs-4"></iconify-icon>
                           </a>
                           <ul class="dropdown-menu">
+=======
+                  {% comment %} <a href="{%url 'login' %}" class="mx-3">
+                    <iconify-icon icon="healthicons:person" class="fs-4"></iconify-icon>
+                  </a> {% endcomment %}
+                  <div class="dropdown">
+                    <a class="nav-link dropdown-toggle mx-3" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <iconify-icon icon="healthicons:person" class="fs-4"></iconify-icon>
+                    </a>
+                    <ul class="dropdown-menu">
+                        {% if user.is_authenticated %}
+                        <li>
+                         <form action="{% url 'logout' %}" method="post" class="mb-0">
+                        {% csrf_token %}
+                           <button type="submit" class="dropdown-item">Logout</button>
+                          </form>
+                          <form action="{% url 'profile' %}" method="post" class="mb-0">
+                            {% csrf_token %}
+                               <button type="submit" class="dropdown-item">Profile</button>
+                              </form>
+                       </li>
+                       {% else %}
+                          <li><a href="{% url 'login' %}" class="dropdown-item">Login</a></li>
+                      {% endif %}
+                    </ul>
+                </div>
+                </li>
+              
+                
+                
+>>>>>>> a355bea42849a0ff12a27b5e678e97cb5e22120c
 
                               {% if user.is_authenticated %}
                               <li>
@@ -442,7 +436,7 @@
                 <h2 class="banner-title display-1 fw-normal">Best destination for <span class="text-primary">your
                     pets</span>
                 </h2>
-                <a href="#" class="btn btn-outline-dark btn-lg text-uppercase fs-6 rounded-1">
+                <a href="{% url 'shop' %}" class="btn btn-outline-dark btn-lg text-uppercase fs-6 rounded-1">
                   shop now
                   <svg width="24" height="24" viewBox="0 0 24 24" class="mb-1">
                     <use xlink:href="#arrow-right"></use>
@@ -454,14 +448,14 @@
           <div class="swiper-slide py-5">
             <div class="row banner-content align-items-center">
               <div class="img-wrapper col-md-5">
-                <img src="{%static 'store/images/banner-img3.png' %}" class="img-fluid">
+                <img src="{% static 'store/images/banner-img3.png' %}" class="img-fluid">
               </div>
               <div class="content-wrapper col-md-7 p-5 mb-5">
                 <div class="secondary-font text-primary text-uppercase mb-4">Save 10 - 20 % off</div>
                 <h2 class="banner-title display-1 fw-normal">Best destination for <span class="text-primary">your
                     pets</span>
                 </h2>
-                <a href="#" class="btn btn-outline-dark btn-lg text-uppercase fs-6 rounded-1">
+                <a href="{% url 'shop'%}" class="btn btn-outline-dark btn-lg text-uppercase fs-6 rounded-1">
                   shop now
                   <svg width="24" height="24" viewBox="0 0 24 24" class="mb-1">
                     <use xlink:href="#arrow-right"></use>
@@ -473,14 +467,14 @@
           <div class="swiper-slide py-5">
             <div class="row banner-content align-items-center">
               <div class="img-wrapper col-md-5">
-                <img src="{%static 'store/images/banner-img4.png' %}" class="img-fluid">
+                <img src="{% static 'store/images/banner-img4.png' %}" class="img-fluid">
               </div>
               <div class="content-wrapper col-md-7 p-5 mb-5">
                 <div class="secondary-font text-primary text-uppercase mb-4">Save 10 - 20 % off</div>
                 <h2 class="banner-title display-1 fw-normal">Best destination for <span class="text-primary">your
                     pets</span>
                 </h2>
-                <a href="#" class="btn btn-outline-dark btn-lg text-uppercase fs-6 rounded-1">
+                <a href="{% url 'shop'%}" class="btn btn-outline-dark btn-lg text-uppercase fs-6 rounded-1">
                   shop now
                   <svg width="24" height="24" viewBox="0 0 24 24" class="mb-1">
                     <use xlink:href="#arrow-right"></use>
@@ -501,7 +495,7 @@
     <div class="container my-3 py-5">
       <div class="row my-5">
         <div class="col text-center">
-          <a href="#" class="categories-item">
+          <a href="{% url 'pet' %}" class="categories-item">
             <iconify-icon class="category-icon" icon="ph:bowl-food"></iconify-icon>
             <h5>Foodies</h5>
           </a>
@@ -530,7 +524,7 @@
       <div class="section-header d-md-flex justify-content-between align-items-center mb-3">
         <h2 class="display-3 fw-normal">Pet </h2>
         <div>
-          <a href="#" class="btn btn-outline-dark btn-lg text-uppercase fs-6 rounded-1">
+          <a href="{%url 'shop' %}" class="btn btn-outline-dark btn-lg text-uppercase fs-6 rounded-1">
             shop now
             <svg width="24" height="24" viewBox="0 0 24 24" class="mb-1">
               <use xlink:href="#arrow-right"></use>
@@ -563,7 +557,11 @@
                         <a href="{% url 'add_to_cart' product.id  %}" class="btn-cart me-3 px-2 pt-2 pb-2">
                             <h5 class="text-uppercase m-0">Add to Cart</h5>
                         </a>
+<<<<<<< HEAD
                         
+=======
+        
+>>>>>>> a355bea42849a0ff12a27b5e678e97cb5e22120c
                     </div>
                    
                 </div>
@@ -587,16 +585,9 @@
 
       <div class="section-header d-md-flex justify-content-between align-items-center">
         <h2 class="display-3 fw-normal">Pet Foodies</h2>
-        <div class="mb-4 mb-md-0">
-          <p class="m-0">
-            <button class="filter-button me-4  active" data-filter="*">ALL</button>
-            <button class="filter-button me-4 " data-filter=".cat">CAT</button>
-            <button class="filter-button me-4 " data-filter=".dog">DOG</button>
-         
-          </p>
-        </div>
+      
         <div>
-          <a href="#" class="btn btn-outline-dark btn-lg text-uppercase fs-6 rounded-1">
+          <a href="{% url 'pet'   %}" class="btn btn-outline-dark btn-lg text-uppercase fs-6 rounded-1">
             shop now
             <svg width="24" height="24" viewBox="0 0 24 24" class="mb-1">
               <use xlink:href="#arrow-right"></use>
@@ -629,9 +620,12 @@
                               <a href="{% url 'add_to_cart' product.id  %}" class="btn-cart me-3 px-2 pt-2 pb-2">
                                   <h5 class="text-uppercase m-0">Add to Cart</h5>
                               </a>
+<<<<<<< HEAD
                               {% comment %} <a href="{% url 'show'  %}" class="btn-wishlist px-3 pt-2">
                                   <iconify-icon icon="fluent:heart-28-filled" class="fs-5"></iconify-icon> {% endcomment %}
                               {% comment %} </a> {% endcomment %}
+=======
+>>>>>>> a355bea42849a0ff12a27b5e678e97cb5e22120c
                           </div>
                          
                       </div>
@@ -649,17 +643,13 @@
     <div class="container">
       <div class="row flex-row-reverse banner-content align-items-center">
         <div class="img-wrapper col-12 col-md-6">
-          <img src="{%static 'store/images/banner-img2.png' %}" class="img-fluid">
+          <img src="{% static 'store/images/banner-img2.png' %}" class="img-fluid">
         </div>
         <div class="content-wrapper col-12 offset-md-1 col-md-5 p-5">
           <div class="secondary-font text-primary text-uppercase mb-3 fs-4">Upto 40% off</div>
-          <h2 class="banner-title display-1 fw-normal">Clearance sale !!!
+          <h2 class="banner-title display-1 fw-normal">Best Selling Products!!!
           </h2>
-          <a href="#" class="btn btn-outline-dark btn-lg text-uppercase fs-6 rounded-1">
-            shop now
-            <svg width="24" height="24" viewBox="0 0 24 24" class="mb-1">
-              <use xlink:href="#arrow-right"></use>
-            </svg></a>
+          
         </div>
 
       </div>
@@ -724,6 +714,7 @@
 
   </section>
 
+<<<<<<< HEAD
   <section id="bestselling" class="my-5 overflow-hidden">
     <div class="container py-5 mb-5">
 
@@ -971,6 +962,8 @@
 
     </div>
   </section>
+=======
+>>>>>>> a355bea42849a0ff12a27b5e678e97cb5e22120c
 
   <section id="register" style="background: url('store/images/background-img.png') no-repeat;">
     <div class="container ">
@@ -997,94 +990,6 @@
             
             </div>
           </form>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section id="latest-blog" class="my-5">
-    <div class="container py-5 my-5">
-      <div class="row mt-5">
-        <div class="section-header d-md-flex justify-content-between align-items-center mb-3">
-          <h2 class="display-3 fw-normal">Latest Blog Post</h2>
-          <div>
-            <a href="#" class="btn btn-outline-dark btn-lg text-uppercase fs-6 rounded-1">
-              Read all
-              <svg width="24" height="24" viewBox="0 0 24 24" class="mb-1">
-                <use xlink:href="#arrow-right"></use>
-              </svg></a>
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-4 my-4 my-md-0">
-          <div class="z-1 position-absolute rounded-3 m-2 px-3 pt-1 bg-light">
-            <h3 class="secondary-font text-primary m-0">20</h3>
-            <p class="secondary-font fs-6 m-0">Feb</p>
-
-          </div>
-          <div class="card position-relative">
-            <a href="single-post.html"><img src="images/blog1.jpg" class="img-fluid rounded-4" alt="image"></a>
-            <div class="card-body p-0">
-              <a href="single-post.html">
-                <h3 class="card-title pt-4 pb-3 m-0">10 Reasons to be helpful towards any animals</h3>
-              </a>
-
-              <div class="card-text">
-                <p class="blog-paragraph fs-6">At the core of our practice is the idea that cities are the incubators of
-                  our greatest
-                  achievements, and the best hope for a sustainable future.</p>
-                <a href="single-post.html" class="blog-read">read more</a>
-              </div>
-
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4 my-4 my-md-0">
-          <div class="z-1 position-absolute rounded-3 m-2 px-3 pt-1 bg-light">
-            <h3 class="secondary-font text-primary m-0">21</h3>
-            <p class="secondary-font fs-6 m-0">Feb</p>
-
-          </div>
-          <div class="card position-relative">
-            <a href="single-post.html"><img src="store/images/blog2.jpg" class="img-fluid rounded-4" alt="image"></a>
-            <div class="card-body p-0">
-              <a href="single-post.html">
-                <h3 class="card-title pt-4 pb-3 m-0">How to know your pet is hungry</h3>
-              </a>
-
-              <div class="card-text">
-                <p class="blog-paragraph fs-6">At the core of our practice is the idea that cities are the incubators of
-                  our greatest
-                  achievements, and the best hope for a sustainable future.</p>
-                <a href="single-post.html" class="blog-read">read more</a>
-              </div>
-
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4 my-4 my-md-0">
-          <div class="z-1 position-absolute rounded-3 m-2 px-3 pt-1 bg-light">
-            <h3 class="secondary-font text-primary m-0">22</h3>
-            <p class="secondary-font fs-6 m-0">Feb</p>
-
-          </div>
-          <div class="card position-relative">
-            <a href="single-post.html"><img src="store/images/blog3.jpg" class="img-fluid rounded-4" alt="image"></a>
-            <div class="card-body p-0">
-              <a href="single-post.html">
-                <h3 class="card-title pt-4 pb-3 m-0">Best home for your pets</h3>
-              </a>
-
-              <div class="card-text">
-                <p class="blog-paragraph fs-6">At the core of our practice is the idea that cities are the incubators of
-                  our greatest
-                  achievements, and the best hope for a sustainable future.</p>
-                <a href="single-post.html" class="blog-read">read more</a>
-              </div>
-
-            </div>
-          </div>
         </div>
       </div>
     </div>
@@ -1157,7 +1062,7 @@
           <iconify-icon class="text-white" icon="la:instagram"></iconify-icon>
         </div>
         <a href="#">
-          <img src="{%static 'store/images/insta2.jpg'%}" alt="insta-img" class="img-fluid rounded-3">
+          <img src="{% static 'store/images/insta2.jpg'%}" alt="insta-img" class="img-fluid rounded-3">
         </a>
       </div>
       <div class="col instagram-item  text-center position-relative">
@@ -1165,7 +1070,7 @@
           <iconify-icon class="text-white" icon="la:instagram"></iconify-icon>
         </div>
         <a href="#">
-          <img src="{%static 'images/insta3.jpg'%}" alt="insta-img" class="img-fluid rounded-3">
+          <img src="{% static 'images/insta3.jpg'%}" alt="insta-img" class="img-fluid rounded-3">
         </a>
       </div>
       <div class="col instagram-item  text-center position-relative">
@@ -1173,7 +1078,7 @@
           <iconify-icon class="text-white" icon="la:instagram"></iconify-icon>
         </div>
         <a href="#">
-          <img src="{%static 'store/images/insta4.jpg'%}" alt="insta-img" class="img-fluid rounded-3">
+          <img src="{% static 'store/images/insta4.jpg'%}" alt="insta-img" class="img-fluid rounded-3">
         </a>
       </div>
       <div class="col instagram-item  text-center position-relative">
@@ -1181,7 +1086,7 @@
           <iconify-icon class="text-white" icon="la:instagram"></iconify-icon>
         </div>
         <a href="#">
-          <img src="{%static 'store/images/insta5.jpg'%}" alt="insta-img" class="img-fluid rounded-3">
+          <img src="{% static 'store/images/insta5.jpg'%}" alt="insta-img" class="img-fluid rounded-3">
         </a>
       </div>
       <div class="col instagram-item  text-center position-relative">
@@ -1189,7 +1094,7 @@
           <iconify-icon class="text-white" icon="la:instagram"></iconify-icon>
         </div>
         <a href="#">
-          <img src="{%static 'store/images/insta6.jpg'%}" alt="insta-img" class="img-fluid rounded-3">
+          <img src="{% static 'store/images/insta6.jpg'%}" alt="insta-img" class="img-fluid rounded-3">
         </a>
       </div>
     </div>

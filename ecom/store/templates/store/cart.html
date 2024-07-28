@@ -43,10 +43,21 @@
       <p>Subtotal: $<span id="subtotal">{{ total_price|floatformat:2 }}</span></p>
       <p>Tax: $<span id="tax">{{ tax|floatformat:2 }}</span></p>
       <p><strong>Total: $<span id="total">{{ total|floatformat:2 }}</span></strong></p>
-      <button type="button" id="checkout-btn" {% if not cart_items %}disabled{% endif %}>Checkout</button>
+      <form action="{% url 'payment' %}" method="get" id="checkout-form">
+        {% csrf_token %}
+        <button type="submit" id="checkout-btn" {% if not cart_items %}disabled{% endif %}>Checkout</button>
+    </form>
     </div>
   {% else %}
-    <p>Your cart is currently empty.</p>
+     <br> 
+     <div class="col-sm-8 col-lg-4 d-flex justify-content-end gap-5 align-items-center mt-4 mt-sm-0 justify-content-center justify-content-sm-end">
+      
+      <p> Create an user account first.</p>
+      <div class="support-box text-end d-none d-xl-block">
+         <a href="{% url 'register' %}" class="btn btn-primary ">Register</a>
+      </div>
+      
+    </div>
   {% endif %}
 
   <script>

@@ -28,8 +28,15 @@ class CustomAuthenticationForm(AuthenticationForm):
     username = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
     password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control'}))
 
+<<<<<<< HEAD
 
 class CustomAuthenticationForm(forms.Form):
     username = forms.CharField(max_length=150, required=True)
     password = forms.CharField(widget=forms.PasswordInput, required=True)
     captcha = CaptchaField()
+=======
+class CustomAuthenticationForm(forms.Form):
+    username = forms.CharField(max_length=150, required=True)
+    password = forms.CharField(widget=forms.PasswordInput, required=True)
+    captcha = CaptchaField()
+>>>>>>> a355bea42849a0ff12a27b5e678e97cb5e22120c

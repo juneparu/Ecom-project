@@ -1,10 +1,24 @@
+<<<<<<< HEAD
 from django.shortcuts import get_object_or_404, render ,redirect
 from .models import CartItem, Category, Product
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 from .forms import CustomAuthenticationForm
+=======
+
+from urllib import request
+from django.shortcuts import get_object_or_404, render ,redirect
+from django.views import View
+from .models import CartItem, Category, Product
+from django.contrib.auth import login as auth_login, authenticate, logout as auth_logout
+>>>>>>> a355bea42849a0ff12a27b5e678e97cb5e22120c
 from django.contrib import messages
 from decimal import Decimal
+from django.conf import settings
 from .forms import CustomUserCreationForm, CustomAuthenticationForm
+import stripe
+import requests
+
+stripe.api_key = settings.STRIPE_SECRET_KEY
 
 from django.conf import settings
 
@@ -40,7 +54,10 @@ def verify_recaptcha(token):
 def login(request):
     error = None
     form = CustomAuthenticationForm()
+<<<<<<< HEAD
 
+=======
+>>>>>>> a355bea42849a0ff12a27b5e678e97cb5e22120c
     if request.method == 'POST':
         form = CustomAuthenticationForm(request.POST)
         if form.is_valid():
@@ -58,6 +75,7 @@ def login(request):
                 error = "Invalid CAPTCHA. Please try again."
         else:
             error = "Invalid form submission."
+<<<<<<< HEAD
 
     return render(request, 'store/login.html', {'form': form, 'error': error})
 
@@ -67,16 +85,44 @@ def logout_view(request):
         return redirect('home')  # Redirect to home after logout
     else:
         return redirect('home')
+=======
+    return render(request, 'store/login.html', {'form': form, 'error': error})
+
+def verify_recaptcha(token):
+    secret_key =  '6LeaFBgqAAAAACcpJhAzZiYZ0_8AcbtgI2LhO3lO' # Replace with your actual secret key
+    url = 'https://www.google.com/recaptcha/api/siteverify'
+    data = {
+        'secret': secret_key,
+        'response': token
+    }
+    response = requests.post(url, data=data)
+    result = response.json()
+    return result.get('success', False)
+
+def logout_view(request):
+    if request.method == 'POST':
+        auth_logout(request)
+        return redirect('home')
+    else:
+        return redirect('home')
+    
+def profile(request):
+    return render(request, 'store/profile.html', {'user': request.user})
+>>>>>>> a355bea42849a0ff12a27b5e678e97cb5e22120c
 
 def profile(request):
     return render(request, 'store/profile.html', {'user': request.user})
 
-def home(request):
+
+def home(request): 
     products = Product.objects.all()  # Get all products
     foodie_category = Product.objects.filter(category=5)
     context = {'products': products, 'foodie_products': foodie_category}
     return render(request, 'store/home.html', context)
+<<<<<<< HEAD
 
+=======
+>>>>>>> a355bea42849a0ff12a27b5e678e97cb5e22120c
 
 def about_us(request):
     context = {}  # Create an empty context dictionary to pass data to the template (optional)
@@ -154,3 +200,49 @@ def home(request):
     results = Product.objects.filter(name__icontains=query) if query else None
     return render(request, 'store/home.html', {'results': results, 'query': query})
 
+<<<<<<< HEAD
+=======
+
+class PaymentView(View):
+    def get(self, request):
+        cart_items = request.session.get('cart_items', [])
+
+        return render(request, 'store/payment.html', {
+            'STRIPE_PUBLIC_KEY': settings.STRIPE_PUBLIC_KEY,
+            'cart_items': cart_items
+        })
+
+    def post(self, request):
+        token = request.POST.get('stripeToken')
+        amount = int(request.POST.get('amount'))  # Amount in cents
+
+        try:
+            charge = stripe.Charge.create(
+                amount=amount,
+                currency='usd',
+                source=token,
+                description='My E-commerce Payment'
+            )
+            return redirect('success')
+        except stripe.error.StripeError:
+            return redirect('failure')
+        
+def success_view(request):
+    return render(request, 'store/success.html')
+
+def failure_view(request):
+    return render(request, 'store/failure.html')  
+
+def pet(request):
+    products = Product.objects.all()  # Get all products
+    foodie_category = Product.objects.filter(category=5)  
+    context = {'products': products, 'foodie_products': foodie_category}
+    return render(request, 'store/pet.html',context) 
+
+def shop(request):
+    products=Product.objects.all()
+    context = {'products': products}
+    return render(request, 'store/shop.html', context)
+
+    
+>>>>>>> a355bea42849a0ff12a27b5e678e97cb5e22120c
